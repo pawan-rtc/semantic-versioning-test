@@ -11,6 +11,7 @@ export default function Home() {
         <h1>This is a new feature</h1>
         <h1>This is a new feature 2</h1>
         <h1>This is a new feature 3</h1>
+        <h1>This is a new feature 100</h1>
 
         <h1>This is a new feature on DEVELOP</h1>
         <h1>This is a new feature on DEVELOP 4</h1>
