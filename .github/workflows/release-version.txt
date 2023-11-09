@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -26,3 +25,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
         run: npx semantic-release
+
+  helloworld:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo "Hello, world!"
