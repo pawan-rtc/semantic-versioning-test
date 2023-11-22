@@ -14,10 +14,10 @@ env:
   SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
 jobs:
-  slackNotificationOnPr:
-    name: Slack Notification
+  slackNotificationAndRelease:
+    name: Slack Notification and Release Version
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.action == 'opened'
+    if: github.event_name == 'pull_request' && (github.event.action == 'opened' || (github.event.action == 'closed' && github.event.pull_request.merged))
     steps:
       - name: Send slack message on leave-app-frontend on pr
         id: slack
@@ -37,36 +37,6 @@ jobs:
                 ] 
               }
 
-  slackNotificationOnMerge:
-    name: Slack Notification on merge
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged
-    steps:
-      - name: Send slack notification on merge
-        id: slackNotificationOnMerge
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          payload: |
-            {
-              "text": "PR merged: ${{ github.event.pull_request.title}}",
-              "blocks": [
-                {
-                    "type": "section",
-                    "text": {
-                      "type": "mrkdwn",
-                      "text": ":rocket: *Merged*\n* By:* <${{ github.event.pull_request.user.html_url}}|${{ github.event.pull_request.merged_by.login}}>\n*Link:* <${{ github.event.pull_request.html_url}}|${{ github.event.pull_request.title}}>"
-                    }
-                  } 
-                
-                ]
-              }
-
-  release:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    if: github.event_name == 'push' && github.event.pull_request.merged
-    steps:
       - name: Checkout Code
         uses: actions/checkout@v2
         with:
