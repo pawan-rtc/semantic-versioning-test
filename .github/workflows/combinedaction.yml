@@ -65,7 +65,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    if: github.event_name == 'push' && github.event.pull_request.merged
+    if: github.event_name == 'push' || github.event.pull_request.merged
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
