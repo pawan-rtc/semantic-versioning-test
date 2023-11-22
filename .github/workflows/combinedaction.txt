@@ -37,10 +37,11 @@ jobs:
                 ] 
               }
 
-  slackNotificationOnMerge:
-    name: Slack Notification on merge
+  onMergeSlackNotifyWithMerge:
+    name: Slack Notification on merge, and/or release version
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged
+
     steps:
       - name: Send slack notification on merge
         id: slackNotificationOnMerge
