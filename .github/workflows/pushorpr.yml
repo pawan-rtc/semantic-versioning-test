@@ -24,14 +24,10 @@ jobs:
         if: github.event_name == 'pull_request' && github.event.action == 'opened'
         run: echo "New PR Created"
 
-      - name: PR Closed
-        if: github.event_name == 'pull_request' && github.event.action == 'closed'
+      - name: PR Merged
+        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
         run: echo "PR merged"
 
-      - name: PR Synchronize
-        if: github.event_name == 'pull_request' && github.event.action == 'synchronize'
-        run: echo "A push was made"
-
       - name: Push to Branch
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && github.event_name != 'pull_request'
         run: echo "A push was made"
