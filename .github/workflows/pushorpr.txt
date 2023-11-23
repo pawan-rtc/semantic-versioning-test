@@ -1,0 +1,33 @@
+name: PR and Push Events
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - closed
+  push:
+    branches:
+      - main
+      - develop
+      - test
+
+jobs:
+  process_events:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: PR Opened
+        if: github.event_name == 'pull_request' && github.event.action == 'opened'
+        run: echo "New PR Created"
+
+      - name: PR Merged
+        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+        run: echo "PR merged"
+
+      - name: Push to Branch
+        if: github.event_name == 'push' && github.event_name != 'pull_request'
+        run: echo "A push was made"

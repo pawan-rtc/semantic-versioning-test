@@ -1,0 +1,32 @@
+name: PR and Push Events
+
+on:
+  pull_request:
+    types:
+      - opened
+      - closed
+  push:
+    branches:
+      - main
+      - develop
+      - test
+
+jobs:
+  process_events:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: PR Opened
+        if: github.event_name == 'pull_request' && github.event.action == 'opened'
+        uses: ./actionScripts/slackNotifyOnPR.yml
+
+      - name: PR Merged
+        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+        run: ./actionScripts/slackNotifyOnMERGE.yml
+
+      - name: Push to Branch
+        if: github.event_name == 'push' && github.event_name != 'pull_request'
+        run: ./actionScripts/release-version.yml
