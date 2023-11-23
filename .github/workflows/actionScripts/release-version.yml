@@ -26,8 +26,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
         run: npx semantic-release
 
-  helloworld:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: echo "Hello, world!"

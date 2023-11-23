@@ -1,0 +1,29 @@
+# slack-notification.yml
+name: Slack Notification
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  slack-notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send slack notification
+        id: slackNotification
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": "${{ env.SLACK_NOTIFICATION_TEXT }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ env.SLACK_NOTIFICATION_MARKDOWN }}"
+                  }
+                } 
+              ] 
+            }
