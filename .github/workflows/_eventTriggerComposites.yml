@@ -4,7 +4,6 @@ on:
   pull_request:
     types:
       - opened
-      - synchronize
       - closed
   push:
     branches:
@@ -22,12 +21,12 @@ jobs:
 
       - name: PR Opened
         if: github.event_name == 'pull_request' && github.event.action == 'opened'
-        run: echo "New PR Created"
+        uses: ./actionScripts/slackNotifyOnPR.yml
 
       - name: PR Merged
         if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
-        run: echo "PR merged"
+        run: ./actionScripts/slackNotifyOnMERGE.yml
 
       - name: Push to Branch
         if: github.event_name == 'push' && github.event_name != 'pull_request'
-        run: echo "A push was made"
+        run: ./actionScripts/release-version.yml

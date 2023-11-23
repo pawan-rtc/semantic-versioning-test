@@ -1,0 +1,28 @@
+# slack-notification.yml
+name: Slack Notification
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  slack-notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send slack message on leave-app-frontend on pr
+        id: slack
+        uses: ../slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": "PR: ${{ github.event.pull_request.title}} by ${{ github.event.pull_request.user.login}}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ":sparkles: *Incoming PR* :sparkles: \n *By:* <${{ github.event.pull_request.user.html_url}}|${{ github.event.pull_request.user.login}}> \n *Link:* <${{ github.event.pull_request.html_url}}|${{ github.event.pull_request.title}}> | *Commit:* <${{ github.event.pull_request.head.repo.html_url}}/commit/${{ github.event.pull_request.head.sha}}|${{ github.event.pull_request.head.sha}}>"
+                  }
+                } 
+              ] 
+            }
